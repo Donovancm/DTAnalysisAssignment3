@@ -14,7 +14,7 @@ namespace Forecasting
         [STAThread]
         static void Main()
         {
-            CsvReader.ReadCsv();
+            var data = CsvReader.ReadCsv();
             //Application.EnableVisualStyles();
             //Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new Form1());

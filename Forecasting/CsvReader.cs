@@ -10,9 +10,9 @@ namespace Forecasting
     public static class CsvReader
     {
         private static readonly char[] Delimiters = { ';', ',' };
-        private static double[] _demand;
+        private static double[] demand;
 
-        public static bool ReadCsv()
+        public static double[] ReadCsv()
         {
             string fileLocation = ("../../Resources/ForeCastingSwordData.csv");
 
@@ -20,7 +20,7 @@ namespace Forecasting
             int columnSize = 0;
             while (streamReader.ReadLine() != null) columnSize++;
             
-            _demand = new double[columnSize];
+            demand = new double[columnSize];
             streamReader.Close();
 
             bool fileExists = File.Exists(fileLocation);
@@ -28,7 +28,7 @@ namespace Forecasting
             if (!fileExists)
             {
                 Console.WriteLine("NOPE");
-                return false;
+                return null;
             }
             Console.WriteLine("YES");
 
@@ -41,12 +41,10 @@ namespace Forecasting
                     var fields = line.Split(Delimiters[1]);
                     //If the fields read is not empty
                     if (!fields[0].Equals("")) 
-                       _demand[Convert.ToInt32(fields[0]) - 1] = Convert.ToDouble(fields[1]);
+                       demand[Convert.ToInt32(fields[0]) - 1] = Convert.ToDouble(fields[1]);
                 }
             }
-            Console.WriteLine(_demand[36]);
-            Console.ReadLine();
-            return true;
+            return demand;
         }
     }
 }
