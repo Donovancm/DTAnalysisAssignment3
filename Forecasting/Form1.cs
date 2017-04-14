@@ -15,11 +15,15 @@ namespace Forecasting
     {
         private double[] _demand;
         private double[] _ses;
+        private double[] _des;
+        private double[] _desSmoothed;
 
-        public Form1(double[] demand, double[] ses)
+        public Form1(double[] demand, double[] ses, double[] des, double[] desSmooted)
         {
             _demand = demand;
             _ses = ses;
+            _des = des;
+            _desSmoothed = desSmooted;
             InitializeComponent();
         }
 
@@ -41,6 +45,25 @@ namespace Forecasting
 
             chart1.Series["SES"].ChartType = SeriesChartType.FastLine;
             chart1.Series["SES"].Color = Color.Tomato;
+        }
+
+        private void chart2_Click(object sender, EventArgs e)
+        {
+            for (int m = 3; m < _demand.Length; m++)
+            {
+                chart2.Series["Normal Data"].Points.AddXY(m, _demand[m]);
+                chart2.Series["DES"].Points.AddXY(m, _des[m]);
+            }
+            for (int n = 0; n < 10; n++)
+            {
+                chart2.Series["DES"].Points.AddXY(_demand.Length + n, _desSmoothed[_desSmoothed.Length - 1] + n * (_desSmoothed[_desSmoothed.Length - 1] - _des[_demand.Length - 1]));
+                       
+            }
+            chart2.Series["Normal Data"].ChartType = SeriesChartType.FastLine;
+            chart2.Series["Normal Data"].Color = Color.Red;
+
+            chart2.Series["DES"].ChartType = SeriesChartType.FastLine;
+            chart2.Series["DES"].Color = Color.Blue;
         }
     }
 }
