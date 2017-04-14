@@ -15,9 +15,11 @@ namespace Forecasting
         static void Main()
         {
             var data = CsvReader.ReadCsv();
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new Form1());
+            var SES = Ses.ExecuteAlgorithm(data);
+
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Form1(SES.Item1, SES.Item2));
         }
     }
 }
