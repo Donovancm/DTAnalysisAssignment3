@@ -16,15 +16,15 @@ namespace Forecasting
             Tuple<double[], double[]> response;
             double[] des;
 
-            for (double i = 0.1; i <= 1; i += 0.1)
+            for (double i = 0.01; i <= 1; i += 0.01)
             {
-                for (double j = 0.1; j <= 1; j += 0.1)
+                for (double j = 0.01; j <= 1; j += 0.01)
                 {
                     response = DES(i, j, demand, Alpha.CalculateAlpha);
                     des = response.Item1;
-                    Console.WriteLine(j);
+                    //Console.WriteLine(j);
                     var squaredError = SquaredError(des, demand);
-                    Console.WriteLine(squaredError);
+                    //Console.WriteLine(squaredError);
                     if (lowestError < 0 || squaredError < lowestError)
                     {
                         lowestError = squaredError;
@@ -68,10 +68,10 @@ namespace Forecasting
             {
                 squaredDistance += Math.Pow(des[k] - demand[k], 2);
             }
-            Console.WriteLine(squaredDistance);
+
             var squardedDistanceAverage = squaredDistance / (demand.Length - 2);
             var squaredError = Math.Sqrt(squardedDistanceAverage);
-            //Console.WriteLine(squaredError);
+
             return squaredError;
         }
     }

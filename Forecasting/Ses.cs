@@ -14,10 +14,12 @@ namespace Forecasting
             double bestAlpha = -1;
             double[] ses = new double[0];
 
-            for (double i = 0.1; i <= 1; i += 0.1)
+            for (double i = 0.01; i <= 1; i += 0.01)
             {
                 ses = SES(i, demand, Alpha.CalculateAlpha);
+                Console.WriteLine(i);
                 var squaredError = SquaredError(ses, demand);
+                Console.WriteLine(squaredError);
                 if (lowestError < 0 || squaredError < lowestError)
                 {
                     lowestError = squaredError;
@@ -34,6 +36,7 @@ namespace Forecasting
         {
             double[] s = new double[x.Length];
             s[0] = init(x);
+
             for (int t = 1; t < x.Length; t++)
             {
                 s[t] = alpha * x[t - 1] + (1 - alpha) * s[t - 1];
@@ -48,9 +51,9 @@ namespace Forecasting
 
             for (int i = 0; i < ses.Length; i++)
             {
-                squaredDistance += Math.Pow(demand[i] - ses[i], 2);
+                squaredDistance += Math.Pow(ses[i] - demand[i], 2);
             }
-            var squaredDistanceAverage = squaredDistance / ses.Length;
+            var squaredDistanceAverage = squaredDistance / (demand.Length - 1);
             var squaredError = Math.Sqrt(squaredDistanceAverage);
             
             return squaredError;
