@@ -39,14 +39,13 @@ namespace Forecasting
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Console.WriteLine(_demand.Length);
             for (int i = 1; i < _demand.Length; i++)
             {
                 chart1.Series["Normal Data"].Points.AddXY(i, _demand[i]);
                 chart1.Series["SES"].Points.AddXY(i, _ses[i]);
             }
 
-            for (int k = 3; k < _demand.Length; k++)
+            for (int k = 2; k < _demand.Length; k++)
             {
                 chart1.Series["DES"].Points.AddXY(k, _des[k]);
             }
