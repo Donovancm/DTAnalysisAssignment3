@@ -22,9 +22,9 @@ namespace Forecasting
                 {
                     response = DES(i, j, demand, Alpha.CalculateAlpha);
                     des = response.Item1;
-
+                    Console.WriteLine(j);
                     var squaredError = SquaredError(des, demand);
-
+                    Console.WriteLine(squaredError);
                     if (lowestError < 0 || squaredError < lowestError)
                     {
                         lowestError = squaredError;
@@ -68,10 +68,10 @@ namespace Forecasting
             {
                 squaredDistance += Math.Pow(des[k] - demand[k], 2);
             }
-
-            var squardedDistanceAverage = squaredDistance / (des.Length - 2);
+            Console.WriteLine(squaredDistance);
+            var squardedDistanceAverage = squaredDistance / (demand.Length - 2);
             var squaredError = Math.Sqrt(squardedDistanceAverage);
-
+            //Console.WriteLine(squaredError);
             return squaredError;
         }
     }
