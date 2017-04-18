@@ -8,7 +8,7 @@ namespace Forecasting
 {
     public static class Des
     {
-        public static Tuple<double[], double[]> ExecuteAlgorithm(double[] demand)
+        public static Tuple<double[], double[], double, double, double> ExecuteAlgorithm(double[] demand)
         {
             double lowestError = -1;
             double bestAlpha = -1;
@@ -34,7 +34,7 @@ namespace Forecasting
             }
             response = DES(bestAlpha, bestBeta, demand, Alpha.CalculateAlpha);
 
-            return new Tuple<double[], double[]>(response.Item1, response.Item2);
+            return new Tuple<double[], double[], double, double, double>(response.Item1, response.Item2, bestAlpha, bestBeta, lowestError);
         }
 
         private static Tuple<double[], double[]> DES(double alpha, double beta, double[] x, Func<double[], double> init)
@@ -44,8 +44,10 @@ namespace Forecasting
             double[] forecast = new double[x.Length + 1];
 
             s[0] = init(x);
-            s[1] = alpha * x[1] + (1 - alpha) * (s[1 - 1] + (x[0] - x[0]));
-
+            //s[1] = alpha * x[1] + (1 - alpha) * (s[1 - 1] + (x[0] - x[0]));
+            s[1] = x[1];
+            b[1] = x[1] - x[0];
+            Console.WriteLine(s[1]);
             for (int t = 2; t < x.Length; t++)
             {
                 var lastTrend = x[t - 1] - x[t - 2];
@@ -56,6 +58,7 @@ namespace Forecasting
 
                 forecast[t + 1] = s[t] + b[t];
             }
+            
             return new Tuple<double[], double[]>(forecast, s);
         }
         private static double SquaredError(double[] des, double[] demand)

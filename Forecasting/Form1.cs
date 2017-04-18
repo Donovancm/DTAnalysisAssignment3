@@ -15,55 +15,61 @@ namespace Forecasting
     {
         private double[] _demand;
         private double[] _ses;
+        private double _sesAlpha;
+        private double _sesError;
         private double[] _des;
         private double[] _desSmoothed;
+        private double _desAlpha;
+        private double _desBeta;
+        private double _desError;
 
-        public Form1(double[] demand, double[] ses, double[] des, double[] desSmooted)
+        public Form1(double[] demand, double[] ses, double sesAlpha, double sesError, double[] des, double[] desSmoothed, double desAlpha, double desBeta, double desError)
         {
             _demand = demand;
             _ses = ses;
+            _sesAlpha = sesAlpha;
+            _sesError = sesError;
             _des = des;
-            _desSmoothed = desSmooted;
+            _desSmoothed = desSmoothed;
+            _desAlpha = desAlpha;
+            _desBeta = desBeta;
+            _desError = desError;
             InitializeComponent();
         }
 
-        private void chart1_Click(object sender, EventArgs e)
+        private void Form1_Load(object sender, EventArgs e)
         {
+            Console.WriteLine(_demand.Length);
             for (int i = 1; i < _demand.Length; i++)
             {
                 chart1.Series["Normal Data"].Points.AddXY(i, _demand[i]);
                 chart1.Series["SES"].Points.AddXY(i, _ses[i]);
             }
 
-            for (int j = 0; j < 10; j++)
+            for (int k = 3; k < _demand.Length; k++)
+            {
+                chart1.Series["DES"].Points.AddXY(k, _des[k]);
+            }
+
+            for (int j = 0; j < 12; j++)
             {
                 chart1.Series["SES"].Points.AddXY(_demand.Length + j, _ses[_demand.Length - 1]);
+                chart1.Series["DES"].Points.AddXY(_demand.Length + j, _desSmoothed[_desSmoothed.Length - 1] + j * (_desSmoothed[_desSmoothed.Length - 1] - _des[_demand.Length - 1]));
             }
 
             chart1.Series["Normal Data"].ChartType = SeriesChartType.FastLine;
-            chart1.Series["Normal Data"].Color = Color.Orange;
-
+            chart1.Series["Normal Data"].Color = Color.Red;
             chart1.Series["SES"].ChartType = SeriesChartType.FastLine;
-            chart1.Series["SES"].Color = Color.Tomato;
-        }
+            chart1.Series["SES"].Color = Color.Blue;
+            chart1.Series["DES"].ChartType = SeriesChartType.FastLine;
+            chart1.Series["DES"].Color = Color.Green;
 
-        private void chart2_Click(object sender, EventArgs e)
-        {
-            for (int m = 3; m < _demand.Length; m++)
-            {
-                chart2.Series["Normal Data"].Points.AddXY(m, _demand[m]);
-                chart2.Series["DES"].Points.AddXY(m, _des[m]);
-            }
-            for (int n = 0; n < 10; n++)
-            {
-                chart2.Series["DES"].Points.AddXY(_demand.Length + n, _desSmoothed[_desSmoothed.Length - 1] + n * (_desSmoothed[_desSmoothed.Length - 1] - _des[_demand.Length - 1]));
-                       
-            }
-            chart2.Series["Normal Data"].ChartType = SeriesChartType.FastLine;
-            chart2.Series["Normal Data"].Color = Color.Red;
+            textBox1.AppendText("Best Alpha for SES: " + _sesAlpha + Environment.NewLine);
+            textBox1.AppendText("Best Error for SES: " + _sesError + Environment.NewLine + Environment.NewLine);
+            textBox1.AppendText("Best Alpha for DES: " + _desAlpha + Environment.NewLine);
+            textBox1.AppendText("Best Beta for DES: " + _desBeta + Environment.NewLine);
+            textBox1.AppendText("Best Error for DES: " + _desError);
 
-            chart2.Series["DES"].ChartType = SeriesChartType.FastLine;
-            chart2.Series["DES"].Color = Color.Blue;
         }
     }
 }

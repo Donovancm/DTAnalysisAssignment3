@@ -19,7 +19,7 @@ namespace Forecasting
             var DES = Des.ExecuteAlgorithm(data);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1(SES.Item1, SES.Item2, DES.Item1,DES.Item2));
+            Application.Run(new Form1(SES.Item1, SES.Item2, SES.Item3, SES.Item4, DES.Item1,DES.Item2, DES.Item3, DES.Item4, DES.Item5));
         }
     }
 }
