@@ -15,25 +15,18 @@ namespace Forecasting
             double[] demand;
             string fileLocation = ("../../Resources/ForeCastingSwordData.csv");
 
+
             StreamReader streamReader = new StreamReader(fileLocation);
             int columnSize = 0;
             while (streamReader.ReadLine() != null) columnSize++;
-            
+
             demand = new double[columnSize];
             streamReader.Close();
 
-            bool fileExists = File.Exists(fileLocation);
-
-            if (!fileExists)
-            {
-                return null;
-            }
-
-
-            using (StreamReader streamreader = new StreamReader("../../Resources/ForeCastingSwordData.csv"))
+            using (streamReader = new StreamReader(fileLocation))
             {
                 string line;
-                while ((line = streamreader.ReadLine()) != null)
+                while ((line = streamReader.ReadLine()) != null)
                 {
                     var fields = line.Split(',');
                     demand[Convert.ToInt32(fields[0]) - 1] = Convert.ToDouble(fields[1]);

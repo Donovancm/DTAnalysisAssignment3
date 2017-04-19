@@ -20,7 +20,7 @@ namespace Forecasting
             {
                 for (double j = 0.01; j <= 1; j += 0.01)
                 {
-                    response = DES(i, j, demand, Alpha.CalculateAlpha);
+                    response = DES(i, j, demand, Alpha);
                     des = response.Item1;
                     //Console.WriteLine(j);
                     var squaredError = SquaredError(des, demand);
@@ -33,7 +33,7 @@ namespace Forecasting
                     }
                 }
             }
-            response = DES(bestAlpha, bestBeta, demand, Alpha.CalculateAlpha);
+            response = DES(bestAlpha, bestBeta, demand, Alpha);
 
             return new Tuple<double[], double[], double, double, double>(response.Item1, response.Item2, bestAlpha, bestBeta, lowestError);
         }
@@ -71,6 +71,17 @@ namespace Forecasting
             var squaredError = Math.Sqrt(squardedDistanceAverage);
 
             return squaredError;
+        }
+
+        private static double Alpha(double[] x)
+        {
+            double sum = 0.0;
+            for (int i = 0; i < 12; i++)
+            {
+                sum += x[i];
+            }
+
+            return sum / 12;
         }
     }
 }

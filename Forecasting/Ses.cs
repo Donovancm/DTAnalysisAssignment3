@@ -16,10 +16,10 @@ namespace Forecasting
 
             for (double i = 0.01; i <= 1; i += 0.01)
             {
-                ses = SES(i, demand, Alpha.CalculateAlpha);
-                Console.WriteLine(i);
+                ses = SES(i, demand, Alpha);
+                //Console.WriteLine(i);
                 var squaredError = SquaredError(ses, demand);
-                Console.WriteLine(squaredError);
+                //Console.WriteLine(squaredError);
                 if (squaredError < lowestError)
                 {
                     lowestError = squaredError;
@@ -27,7 +27,7 @@ namespace Forecasting
                 }
             }
 
-            ses = SES(bestAlpha, demand, Alpha.CalculateAlpha);
+            ses = SES(bestAlpha, demand, Alpha);
 
             return new Tuple<double[], double[], double, double>(demand, ses, bestAlpha, lowestError);
         }
@@ -57,6 +57,17 @@ namespace Forecasting
             var squaredError = Math.Sqrt(squaredDistanceAverage);
             
             return squaredError;
+        }
+
+        private static double Alpha(double[] x)
+        {
+            double sum = 0.0;
+            for (int i = 0; i < 12; i++)
+            {
+                sum += x[i];
+            }
+
+            return sum / 12;
         }
     }
 }

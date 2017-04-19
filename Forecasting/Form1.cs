@@ -14,26 +14,26 @@ namespace Forecasting
     public partial class Form1 : Form
     {
         private double[] _demand;
-        private double[] _ses;
+        private double[] _sesSmoothing;
         private double _sesAlpha;
         private double _sesError;
-        private double[] _des;
-        private double[] _desSmoothed;
+        private double[] _desForecast;
+        private double[] _desSmoothing;
         private double _desAlpha;
         private double _desBeta;
         private double _desError;
 
-        public Form1(double[] demand, double[] ses, double sesAlpha, double sesError, double[] des, double[] desSmoothed, double desAlpha, double desBeta, double desError)
+        public Form1(double[] demand, double[] sesSmoothing, double sesBestAlpha, double sesBestError, double[] desForecast, double[] desSmoothing, double desBestAlpha, double desBestBeta, double desBestError)
         {
             _demand = demand;
-            _ses = ses;
-            _sesAlpha = sesAlpha;
-            _sesError = sesError;
-            _des = des;
-            _desSmoothed = desSmoothed;
-            _desAlpha = desAlpha;
-            _desBeta = desBeta;
-            _desError = desError;
+            _sesSmoothing = sesSmoothing;
+            _sesAlpha = sesBestAlpha;
+            _sesError = sesBestError;
+            _desForecast = desForecast;
+            _desSmoothing = desSmoothing;
+            _desAlpha = desBestAlpha;
+            _desBeta = desBestBeta;
+            _desError = desBestError;
             InitializeComponent();
         }
 
@@ -42,18 +42,19 @@ namespace Forecasting
             for (int i = 1; i < _demand.Length; i++)
             {
                 chart1.Series["Normal Data"].Points.AddXY(i, _demand[i]);
-                chart1.Series["SES"].Points.AddXY(i, _ses[i]);
+                chart1.Series["SES"].Points.AddXY(i, _sesSmoothing[i]);
             }
 
             for (int k = 2; k < _demand.Length; k++)
             {
-                chart1.Series["DES"].Points.AddXY(k, _des[k]);
+                chart1.Series["DES"].Points.AddXY(k, _desForecast[k]);
             }
 
+            //Extension
             for (int j = 0; j < 12; j++)
             {
-                chart1.Series["SES"].Points.AddXY(_demand.Length + j, _ses[_demand.Length - 1]);
-                chart1.Series["DES"].Points.AddXY(_demand.Length + j, _desSmoothed[_desSmoothed.Length - 1] + j * (_desSmoothed[_desSmoothed.Length - 1] - _des[_demand.Length - 1]));
+                chart1.Series["SES"].Points.AddXY(_demand.Length + j, _sesSmoothing[_demand.Length - 1]);
+                chart1.Series["DES"].Points.AddXY(_demand.Length + j, _desSmoothing[_desSmoothing.Length - 1] + j * (_desSmoothing[_desSmoothing.Length - 1] - _desForecast[_demand.Length - 1]));
             }
 
             chart1.Series["Normal Data"].ChartType = SeriesChartType.FastLine;
