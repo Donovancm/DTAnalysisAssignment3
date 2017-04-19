@@ -10,8 +10,8 @@ namespace Forecasting
     {
         public static Tuple<double[],double[], double, double> ExecuteAlgorithm(double[] demand)
         {
-            double lowestError = -1;
-            double bestAlpha = -1;
+            double lowestError = int.MaxValue;
+            double bestAlpha = int.MaxValue;
             double[] ses = new double[0];
 
             for (double i = 0.01; i <= 1; i += 0.01)
@@ -20,7 +20,7 @@ namespace Forecasting
                 Console.WriteLine(i);
                 var squaredError = SquaredError(ses, demand);
                 Console.WriteLine(squaredError);
-                if (lowestError < 0 || squaredError < lowestError)
+                if (squaredError < lowestError)
                 {
                     lowestError = squaredError;
                     bestAlpha = Math.Round(i, 3);

@@ -10,9 +10,9 @@ namespace Forecasting
     {
         public static Tuple<double[], double[], double, double, double> ExecuteAlgorithm(double[] demand)
         {
-            double lowestError = -1;
-            double bestAlpha = -1;
-            double bestBeta = -1;
+            double lowestError = int.MaxValue;
+            double bestAlpha = int.MaxValue;
+            double bestBeta = int.MaxValue;
             Tuple<double[], double[]> response;
             double[] des;
 
@@ -25,7 +25,7 @@ namespace Forecasting
                     //Console.WriteLine(j);
                     var squaredError = SquaredError(des, demand);
                     //Console.WriteLine(squaredError);
-                    if (lowestError < 0 || squaredError < lowestError)
+                    if (squaredError < lowestError)
                     {
                         lowestError = squaredError;
                         bestAlpha = Math.Round(i, 3);
