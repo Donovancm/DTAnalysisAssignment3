@@ -42,23 +42,21 @@ namespace Forecasting
         {
             double[] s = new double[x.Length];
             double[] b = new double[x.Length];
-            double[] forecast = new double[x.Length + 1];
+            double[] f = new double[x.Length + 1];
             
             s[1] = x[1];
             b[1] = x[1] - x[0];
-            forecast[2] = s[1] + b[1];
+            f[2] = s[1] + b[1];
 
             for (int t = 2; t < x.Length; t++)
             {
-                var smoothing = alpha * x[t] + (1 - alpha) * (s[t - 1] + b[t - 1]);
-                s[t] = smoothing;
-                var estimate = beta * (s[t] - s[t - 1]) + (1 - beta) * b[t - 1];
-                b[t] = estimate;
+                s[t] = alpha * x[t] + (1 - alpha) * (s[t - 1] + b[t - 1]);
+                b[t] = beta * (s[t] - s[t - 1]) + (1 - beta) * b[t - 1];
 
-                forecast[t + 1] = s[t] + b[t];
+                f[t + 1] = s[t] + b[t];
             }
             
-            return new Tuple<double[], double[]>(forecast, s);
+            return new Tuple<double[], double[]>(f, s);
         }
         private static double SquaredError(double[] des, double[] demand)
         {

@@ -49,7 +49,7 @@ namespace Forecasting
         {
             var squaredDistance = 0.0;
 
-            for (int i = 0; i < ses.Length; i++)
+            for (int i = 0; i < demand.Length; i++)
             {
                 squaredDistance += Math.Pow(ses[i] - demand[i], 2);
             }
